@@ -2,10 +2,18 @@ import NavBar from "../components/NavBar.tsx";
 import Hero from "../components/Hero.tsx";
 import ProductCard from "../components/ProductCard.tsx";
 import Footer from "../components/Footer.tsx";
-import products from "../assets/products.js";
 import Product from "../interfaces/Product.ts";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    axios.get("/products.json")
+      .then(response => setProducts(response.data))
+      .catch(error => console.error(error));
+    }, []);
+    
   return (
     <>
       <NavBar></NavBar>
@@ -24,6 +32,7 @@ function Home() {
               color={each.color}
               image={each.image}
               onsale={each.onsale}
+              discount={each.discount}
             />
           ))}
         </div>

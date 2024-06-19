@@ -1,23 +1,20 @@
 import { useRef } from "react";
-import Product from "../interfaces/Product";
 import ProductProp from "../interfaces/ProductProp";
 
-export default function CartCard(props: ProductProp) {
-    const {product} = props;
+interface CartCardProps extends ProductProp {
+  updateProductUnits: (id: string, newUnits: number) => void;
+}
+
+export default function CartCard({product, updateProductUnits}: CartCardProps) {
     const {id, title, image, description, price, color, units} = product;
-    const unitsToBuy = useRef<HTMLInputElement>(null);
-    const manageUnits = () => {
-      const productsOnCart = localStorage.getItem("cart");
-      let products = [];
-      if (productsOnCart) {
-        products = JSON.parse(productsOnCart);
-      }
-      const one = products.find((each: Product) => each.id === product.id);
-      if (one) {
-        one.units = Number(unitsToBuy.current.value);
-        localStorage.setItem("cart", JSON.stringify(products));
-      }
-    };
+    const quantity = useRef<HTMLInputElement>(null);
+
+  const manageUnits = () => {
+    if (quantity.current) {
+      const newUnits = Number(quantity.current.value);
+      updateProductUnits(id, newUnits); // Llama a la función de actualización en Cart.tsx
+    }
+  };
     return (
         <article className="w-[340px] lg:w-[680px] md:h-[220px] flex justify-between items-center md:col-start-1 rounded-md p-[30px] py-[15px] lg:py-[30px] m-[10px] bg-[#f2f2f2]">
           <img
@@ -35,9 +32,9 @@ export default function CartCard(props: ProductProp) {
               <input
                 className="w-[60px] rounded-lg border-[#eaeaea] p-[5px] pl-[15px] text-[14px]"
                 type="number"
-                name="quantity"
+                name="units"
                 defaultValue={units}
-                ref={unitsToBuy}
+                ref={quantity}
                 onChange={manageUnits}
                 min="1"
                 id={id}

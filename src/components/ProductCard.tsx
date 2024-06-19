@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Product from "../interfaces/Product";
 
 export default function ProductCard(props: Product) {
-  const { id, title, price, color, image, onsale } = props;
+  const { id, title, price, color, image, discount } = props;
   return (
     <Link
       className="w-[250px] bg-[#f0f0f0] text-[#383838] rounded-2xl m-[15px] no-underline"
@@ -18,7 +18,7 @@ export default function ProductCard(props: Product) {
         <span className="text-[12px] text-[#383838] mb-[5px]">{color[0]}</span>
         <div className="flex my-[5px] justify-between items-center">
           <span className="text-[20px] font-bold">${price}</span>
-          {onsale > 0 && (<span className="text-[12px] font-bold text-[#428f13]">{onsale}% Off</span>
+          {discount > 0 && (<span className="text-[12px] font-bold text-[#428f13]">{discount}% Off</span>
           )}
         </div>
         <div className="text-[10px] font-light">
