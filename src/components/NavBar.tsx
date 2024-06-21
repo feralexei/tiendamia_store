@@ -1,7 +1,20 @@
 import NavButton from "./NavButton.tsx";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { captureText } from "../store/actions/products.ts";
+import { stateType } from "../store/index.ts";
 
 export default function NavBar() {
+  const text = useRef(null);
+  const dispatch = useDispatch();
+  const setText = () => {
+    dispatch(captureText({ text: text.current?.value }));
+  };
+  const location = useLocation();
+  const pathname = location.pathname;
+  const textStore = useSelector((store: stateType) => store.products.text);
+
   return (
     <header className="w-full min-h-[150px] bg-[#ff3b3c] p-[20px 20px 0 20px] flex flex-col items-center">
       <div
@@ -22,12 +35,15 @@ export default function NavBar() {
           />
         </Link>
         <form className="w-full md:w-1/3 flex items-center flex-grow justify-center py-2 md:py-0">
-          <input
+          {pathname === "/" && (<input
             className="h-[60px] border-0 rounded-[15px] w-full p-[10px] my-0 mx-[20px] text-[14px] text-center"
             type="text"
             placeholder="Search"
             id="search"
-          />
+            defaultValue={textStore}
+            ref={text}
+            onChange={setText}
+          />)}
         </form>
         <ul
           className="w-full md:w-1/3 flex items-center flex-grow justify-center pb-2

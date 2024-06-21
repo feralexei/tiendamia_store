@@ -5,15 +5,25 @@ import Footer from "../components/Footer.tsx";
 import Product from "../interfaces/Product.ts";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { stateType } from "../store/index.ts";
 
 function Home() {
   const [products, setProducts] = useState<Product[]>([]);
+  const text = useSelector((store: stateType) => store.products.text);
+  
   useEffect(() => {
-    axios.get("/products.json")
-      .then(response => setProducts(response.data))
-      .catch(error => console.error(error));
-    }, []);
-    
+    axios
+      .get("/products.json")
+      .then((response) => {
+        const filterData = response.data.filter((each) =>
+          each.title.toLowerCase().includes(text.toLowerCase())
+        );
+        setProducts(filterData);
+      })
+      .catch((error) => console.log(error));
+  }, [text]);
+
   return (
     <>
       <NavBar></NavBar>

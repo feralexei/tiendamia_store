@@ -1,20 +1,27 @@
 import { useRef } from "react";
 import ProductProp from "../interfaces/ProductProp";
+import { useDispatch } from "react-redux";
+import { calculateTotal } from "../store/actions/products";
+import Product from "../interfaces/Product";
 
-interface CartCardProps extends ProductProp {
-  updateProductUnits: (id: string, newUnits: number) => void;
-}
+export default function CartCard( { product }: ProductProp ) {
+    const { id, title, image, description, price, color, units } = product;
+    const quantity = useRef(null);
+    const dispatch = useDispatch();
+    const manageUnits = () => {
+      const productsOnCart = localStorage.getItem("cart");
+      let products = [];
+      if (productsOnCart) {
+        products = JSON.parse(productsOnCart);
+      }
+      const one = products?.find((each: Product) => each.id === product.id);
+      if (one) {
+        one.units = Number(quantity.current.value);
+        localStorage.setItem("cart", JSON.stringify(products));
+        dispatch(calculateTotal({ products }));
+      }
+    };
 
-export default function CartCard({product, updateProductUnits}: CartCardProps) {
-    const {id, title, image, description, price, color, units} = product;
-    const quantity = useRef<HTMLInputElement>(null);
-
-  const manageUnits = () => {
-    if (quantity.current) {
-      const newUnits = Number(quantity.current.value);
-      updateProductUnits(id, newUnits); // Llama a la función de actualización en Cart.tsx
-    }
-  };
     return (
         <article className="w-[340px] lg:w-[680px] md:h-[220px] flex justify-between items-center md:col-start-1 rounded-md p-[30px] py-[15px] lg:py-[30px] m-[10px] bg-[#f2f2f2]">
           <img
