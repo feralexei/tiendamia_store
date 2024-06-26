@@ -2,6 +2,7 @@ import NavBar from "../components/NavBar.tsx";
 import Hero from "../components/Hero.tsx";
 import CartCard from "../components/CartCard.tsx";
 import CartResume from "../components/CartResume.tsx";
+import CartEmpty from "../components/CartEmpty.tsx";
 import Footer from "../components/Footer.tsx";
 import { useEffect, useState } from "react";
 import Product from "../interfaces/Product.ts";
@@ -18,16 +19,17 @@ function Cart() {
       dispatch(calculateTotal({ products: JSON.parse(products) }));
     }
   }, []);
-        
+
   return (
     <>
       <NavBar />
       <Hero first="mi" second="carrito" />
       <main className="w-full flex flex-col md:flex-row md:grid justify-center items-center p-[20px]">
+        {productsOnCart.length = 0 && <CartEmpty/>}
         {productsOnCart.map((each: Product) => (
           <CartCard key={each.id} product={each}/>
         ))}
-        <CartResume/>
+        {productsOnCart.length > 0 && <CartResume/>}        
       </main>
       <Footer />
     </>

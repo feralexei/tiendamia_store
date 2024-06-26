@@ -2,9 +2,7 @@ import { useSelector } from "react-redux";
 import { stateType } from "../store";
 
 export default function CartResume() {
-  const total = useSelector((store: stateType) => store.products.total);
-  console.log(total);
-  
+  const total = useSelector((store: stateType) => store.products.total);  
   return (
     <div className="w-[340px] h-[220px] flex flex-col justify-between md:col-start-2 md:row-start-1 rounded-md p-[30px] m-[10px] bg-[#f2f2f2]">
       <div className="flex flex-col flex-grow justify-between">

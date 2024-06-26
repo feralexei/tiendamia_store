@@ -1,11 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import ProductProp from "../interfaces/ProductProp";
+import { useDispatch } from "react-redux";
+import { updateItemCount } from "../store/actions/products";
 
 export default function Checkout(props: ProductProp) {
   const {product} = props;
   const [quantity, setQuantity] = useState(1);
   const [button, setButton] = useState(false);
   const units = useRef<HTMLInputElement>();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     let productsOnCart = [];
     if (localStorage.getItem("cart")) {
@@ -22,6 +26,7 @@ export default function Checkout(props: ProductProp) {
       setButton(false);
     }
   }, [product.id]);
+
   const manageCart = () => {
     let productsOnCart = [];
     if (localStorage.getItem("cart")) {
@@ -37,6 +42,7 @@ export default function Checkout(props: ProductProp) {
       setButton(false);
     }
     localStorage.setItem("cart", JSON.stringify(productsOnCart));
+    dispatch(updateItemCount(productsOnCart.length)); //Actualiza el contador
   };
 
   return (

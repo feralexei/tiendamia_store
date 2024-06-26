@@ -6,10 +6,16 @@ const captureText = createAction("captureText", (obj) => {
   };
 });
 
-const calculateTotal = createAction("calculeTotal", (obj) => {
+const calculateTotal = createAction("calculateTotal", (obj) => {
   return {
     payload: { products: obj.products },
   };
 });
 
-export { captureText, calculateTotal };
+const updateItemCount = createAction("updateItemCount", (count) => {
+  return {
+    payload: { count },
+  };
+});
+
+export { captureText, calculateTotal, updateItemCount };
